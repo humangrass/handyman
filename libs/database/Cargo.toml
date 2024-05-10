@@ -1,0 +1,10 @@
+[package]
+name = "database"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sqlx = { version = "0.7.3", features = ["postgres"] }
+log = { version = "0.4.20", features = [] }
+anyhow = "1.0.80"
+serde = { version = "1.0.197", features = ["derive"] }

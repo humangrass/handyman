@@ -1,0 +1,13 @@
+bitget:
+  # please keep the number of seconds in the cron command above zero
+  - cron: "15 * * * * * *"
+    symbol: "BTCUSDT"
+    granularity: "1min"
+    limit: 10
+  - cron: "5 * * * * * *"
+    symbol: "ETHUSDT"
+    granularity: "1min"
+    limit: 10
+jupiter:
+  - cron: "10 * * * * * *"
+    symbol: "SOLUSDT"

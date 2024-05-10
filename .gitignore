@@ -1,0 +1,11 @@
+target
+.idea
+.vscode
+
+.volumes
+
+*.yaml
+*.yml
+.env
+
+!*.example.*

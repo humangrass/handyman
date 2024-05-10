@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+default-members = [
+    "services/handyman",
+]
+members = [
+    "libs/database",
+    "libs/logger",
+    'domain/models',
+    'domain/repository',
+    'services/handyman'
+]
+
+[workspace.dependencies]
+database = { path = "libs/database" }
+logger = { path = "libs/logger" }
+models = { path = "domain/models" }
+repository = { path = "domain/repository" }
