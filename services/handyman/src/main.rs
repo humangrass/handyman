@@ -1,7 +1,5 @@
 mod yaml;
 mod handyman;
-mod bitget;
-mod jupiter;
 mod cli;
 
 use std::path::Path;

@@ -1,17 +1,22 @@
 use log::info;
 use repository::repository::Repository;
-use crate::yaml::tasks::JupiterTask;
+use serde::{Deserialize, Serialize};
 
-// TODO: надо вынести это в отдельный пакет, а может даже крейт
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Task {
+    pub cron: String,
+    pub symbol: String,
+    pub timeframe: String,
+}
 
 #[derive(Clone)]
 pub struct JupiterExecutor {
     pub repo: Repository,
-    pub task: JupiterTask,
+    pub task: Task,
 }
 
 impl JupiterExecutor {
-    pub fn new(repo: Repository, task: JupiterTask) -> Self {
+    pub fn new(repo: Repository, task: Task) -> Self {
         Self { repo, task }
     }
 
