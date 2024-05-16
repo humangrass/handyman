@@ -13,10 +13,11 @@ pub struct BitgetOpt {
 
 impl BitgetOpt {
     pub fn task(self) -> bitget::executor::Task {
+        let granularity = self.granularity.parse::<bitget::granularity::Granularity>().expect("Invalid granularity");
         bitget::executor::Task {
             cron: self.cron,
             symbol: self.symbol,
-            granularity: self.granularity,
+            granularity,
             limit: self.limit,
         }
     }
