@@ -27,16 +27,21 @@ impl BitgetExecutor {
         Self { repo, task }
     }
 
-    pub async fn execute(&self) {
-        // TODO: надо возвращать anyhow::Result
+    pub async fn execute(&self) -> anyhow::Result<()> {
         info!("Running bitget task: {:?}", self.task);
         let candles = self.request_candles().await.expect("An error occurred while requesting candles");
-        // TODO: можно сделать чек c ошибкой при len > 1
-        let candle = candles.candles.get(0).unwrap();
+
+        if candles.candles.len() > 1 {
+            return Err(anyhow::anyhow!("Expected only one candle, but got multiple"));
+        }
+
+        let candle = candles.candles.get(0).ok_or_else(|| anyhow::anyhow!("Candles not found"))?;
         let granularity = self.task.granularity.clone().as_str().to_string();
         let candle_record = candle.model(BITGET.to_string(), self.task.symbol.clone(), granularity);
         self.repo.insert_candle(candle_record).await.expect("An error occurred while sending data to the database");
         debug!("{:?}", candle);
+        
+        Ok(())
     }
 
     async fn request_candles(&self) -> anyhow::Result<Candles> {
@@ -54,8 +59,8 @@ impl BitgetExecutor {
 
         let response = reqwest::get(&url).await?;
         let body = response.text().await?;
-
         let api_response = ApiResponse::new(body).expect("Error parsing response");
+
         Ok(Candles::new(api_response))
     }
 
