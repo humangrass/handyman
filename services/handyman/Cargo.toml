@@ -8,7 +8,8 @@ database = { workspace = true }
 repository = { workspace = true }
 models = { workspace = true }
 logger = { workspace = true }
-
+jupiter = { workspace = true }
+bitget = { workspace = true }
 
 sqlx = { version = "0.7.3", features = ["runtime-async-std-native-tls", "postgres", "uuid", "chrono"] }
 tokio = { version = "1.37.0", features = ["rt", "rt-multi-thread", "macros", "time"] }

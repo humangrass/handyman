@@ -4,23 +4,45 @@ use std::path::Path;
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize)]
-pub(crate) struct BitgetTask {
-    pub(crate) cron: String,
-    pub(crate) symbol: String,
-    pub(crate) granularity: String,
-    pub(crate) limit: u16,
+pub struct BitgetOpt {
+    pub cron: String,
+    pub symbol: String,
+    pub granularity: String,
+    pub limit: u16,
+}
+
+impl BitgetOpt {
+    pub fn task(self) -> bitget::executor::Task {
+        bitget::executor::Task {
+            cron: self.cron,
+            symbol: self.symbol,
+            granularity: self.granularity,
+            limit: self.limit,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub(crate) struct JupiterTask {
-    pub(crate) cron: String,
-    pub(crate) symbol: String,
+pub struct JupiterOpt {
+    pub cron: String,
+    pub symbol: String,
+    pub timeframe: String,
+}
+
+impl JupiterOpt {
+    pub fn task(self) -> jupiter::Task {
+        jupiter::Task {
+            cron: self.cron,
+            symbol: self.symbol,
+            timeframe: self.timeframe,
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Tasks {
-    pub(crate) bitget: Vec<BitgetTask>,
-    pub(crate) jupiter: Vec<JupiterTask>,
+    pub(crate) bitget: Vec<BitgetOpt>,
+    pub(crate) jupiter: Vec<JupiterOpt>,
 }
 
 impl Tasks {

@@ -1,20 +1,28 @@
 use std::string::ToString;
 use log::{debug, info};
+use serde::{Deserialize, Serialize};
 use sqlx::types::chrono::Utc;
 use repository::repository::Repository;
-use crate::bitget::entries::{ApiResponse, Candles};
-use crate::yaml::tasks::BitgetTask;
+use crate::entries::{ApiResponse, Candles};
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Task {
+    pub cron: String,
+    pub symbol: String,
+    pub granularity: String,
+    pub limit: u16,
+}
 
 #[derive(Clone)]
-pub struct Executor {
+pub struct BitgetExecutor {
     pub repo: Repository,
-    pub task: BitgetTask,
+    pub task: Task,
 }
 
 const BITGET: &str = "BITGET";
 
-impl Executor {
-    pub fn new(repo: Repository, task: BitgetTask) -> Self {
+impl BitgetExecutor {
+    pub fn new(repo: Repository, task: Task) -> Self {
         Self { repo, task }
     }
 

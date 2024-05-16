@@ -3,8 +3,8 @@ use job_scheduler::{Job, JobScheduler};
 use repository::repository::Repository;
 use sqlx::PgPool;
 use tokio::time::sleep;
-use crate::bitget::executor::Executor;
-use crate::jupiter::JupiterExecutor;
+use bitget::executor::BitgetExecutor;
+use jupiter::JupiterExecutor;
 use crate::yaml::tasks::{Tasks};
 
 
@@ -25,7 +25,7 @@ impl Handyman {
 
         for task in self.tasks.bitget.iter() {
             let repo = self.repo.clone();
-            let executor = Executor::new(repo, task.clone());
+            let executor = BitgetExecutor::new(repo, task.clone().task());
             let job = Job::new(task.cron.to_string().parse().unwrap(), move || {
                 let executor = executor.clone();
                 tokio::spawn(async move {
@@ -38,7 +38,7 @@ impl Handyman {
 
         for task in self.tasks.jupiter.iter() {
             let repo = self.repo.clone();
-            let executor = JupiterExecutor::new(repo, task.clone());
+            let executor = JupiterExecutor::new(repo, task.clone().task());
             let job = Job::new(task.cron.to_string().parse().unwrap(), move || {
                 let executor = executor.clone();
                 tokio::spawn(async move {

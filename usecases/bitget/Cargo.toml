@@ -1,0 +1,17 @@
+[package]
+name = "bitget"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+repository = { workspace = true }
+models = { workspace = true }
+
+log = "0.4.21"
+serde = { version = "1.0.202", features = ["derive"] }
+sqlx = { version = "0.7.3", features = ["runtime-async-std-native-tls", "postgres", "uuid", "chrono"] }
+uuid = { version = "1.8.0", features = ["v4"] }
+anyhow = "1.0.83"
+reqwest = "0.12.4"
+serde_json = "1.0.117"
