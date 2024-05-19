@@ -1,5 +1,6 @@
 use std::time::Duration;
 use job_scheduler::{Job, JobScheduler};
+use log::error;
 use repository::repository::Repository;
 use sqlx::PgPool;
 use tokio::time::sleep;
@@ -20,7 +21,6 @@ impl Handyman {
     }
 
     pub async fn run(&self) {
-        // TODO: надо возвращать ошибку, если задач нет или не осталось
         let mut scheduler = JobScheduler::new();
 
         for task in self.tasks.bitget.iter() {
@@ -29,8 +29,9 @@ impl Handyman {
             let job = Job::new(task.cron.to_string().parse().unwrap(), move || {
                 let executor = executor.clone();
                 tokio::spawn(async move {
-                    // TODO: надо чекать на ошибку и удалять все задачи этого типа из планировщика, если она есть
-                    executor.execute().await
+                    if let Err(e) = executor.execute().await {
+                        error!("Error executing task: {:?}\n{:?}", executor.task, e);
+                    }
                 });
             });
             scheduler.add(job);
@@ -42,7 +43,6 @@ impl Handyman {
             let job = Job::new(task.cron.to_string().parse().unwrap(), move || {
                 let executor = executor.clone();
                 tokio::spawn(async move {
-                    // TODO: надо чекать на ошибку и удалять все задачи этого типа из планировщика, если она есть
                     executor.execute().await
                 });
             });
