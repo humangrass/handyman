@@ -20,7 +20,8 @@ impl JupiterExecutor {
         Self { repo, task }
     }
 
-    pub async fn execute(&self) {
+    pub async fn execute(&self) -> anyhow::Result<()> {
         info!("Running jupiter task: {:?}", self.task);
+        Ok(())
     }
 }
